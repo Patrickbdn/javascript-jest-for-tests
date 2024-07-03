@@ -1,12 +1,11 @@
-// script.js
+// Récupération des éléments du DOM
 const addButton = document.getElementById('add-class-button');
 const element = document.getElementById('element');
 
+// Fonction pour ajouter la classe
 function addClassToElement() {
-  // Your code here: Add a CSS class to the 'element' div.
+  element.classList.add('new-class');
 }
 
+// Écouteur d'événement sur le bouton
 addButton.addEventListener('click', addClassToElement);
-
-
-
