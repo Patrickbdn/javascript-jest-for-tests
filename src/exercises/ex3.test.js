@@ -1,32 +1,33 @@
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
+/**
+ * @jest-environment jsdom
+ */
 
-function showValidationMessage(isValid) {
-    const messageElement = document.getElementById('validation-message');
-    if (isValid) {
-        messageElement.textContent = "Email valide !";
-        messageElement.className = 'valid';
-    } else {
-        messageElement.textContent = "Email invalide. Veuillez réessayer.";
-        messageElement.className = 'invalid';
-    }
-}
+const fs = require('fs');
+const path = require('path');
+const { validateEmail, showValidationMessage } = require('./ex3');
 
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('email-form');
-    const emailInput = document.getElementById('email-input');
+const html = fs.readFileSync(path.resolve(__dirname, '../../index.html'), 'utf8');
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const email = emailInput.value;
-        const isValid = validateEmail(email);
-        showValidationMessage(isValid);
+describe('Email Validation', () => {
+    beforeEach(() => {
+        document.documentElement.innerHTML = html.toString();
+        const form = document.getElementById('email-form');
+        const emailInput = document.getElementById('email-input');
+    });
+
+    test('showValidationMessage should display the correct message', (done) => {
+        emailInput.value = "test@example.com";
+        const invalidEmail = "invalid-email";
+        
+        // Test avec un email valide"
+        const validEmail = validateEmail(emailInput.value);
+        showValidationMessage(validEmail);
+        expect(messageElement.textContent).toBe("Email valide !");
+ ; // Attendre 100 ms, ajustez si nécessaire
+
+        // Test avec un email invalide
+        showValidationMessage(invalidEmail);
+        expect(messageElement.textContent).toBe("Email invalide. Veuillez réessayer.");
+
     });
 });
-
-// Export pour les tests
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { validateEmail, showValidationMessage };
-}
